@@ -42,6 +42,27 @@ namespace FinalProject.Controllers
             return user;
         }
 
+        [HttpPost("login/{username}")]
+        public async Task<ActionResult<User>> Login([FromRoute] string username, [FromBody] string password)
+        {
+            
+            try
+            {
+                var user = await _context.User.FirstAsync(u => u.Username == username && u.Password == password);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return user;
+            }
+            catch
+            {
+                return NotFound();
+            }
+            
+        }
+
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
