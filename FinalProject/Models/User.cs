@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FinalProject.Models
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(Name), IsUnique = true)]
     public class User
     {
         [Key]

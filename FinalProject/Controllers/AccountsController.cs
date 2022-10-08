@@ -85,7 +85,7 @@ namespace FinalProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-            var user = await _context.User.FindAsync(account.Customer.UserId);
+            var user = await _context.User.FirstAsync(u => u.Name == account.Customer.Name);
 
             if (user == null)
             {
