@@ -20,7 +20,7 @@ namespace FinalProject.Models
 
         [Required]
         [DataType(DataType.Currency)]
-        public int CurrAmount { get; set; }
+        public float CurrAmount { get; set; }
 
         [Required]
         public string Status { get; set; }

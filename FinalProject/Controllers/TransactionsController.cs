@@ -130,13 +130,14 @@ namespace FinalProject.Controllers
             {
                 return BadRequest();
             }
-            else
+            else if (transaction.FromAccount != null)
             {
                 transaction.FromAccount.CurrAmount -= transaction.Amount;
-                if (transaction.ToAccount != null)
-                {
-                    transaction.ToAccount.CurrAmount += transaction.Amount;
-                }
+            }
+
+            if (transaction.ToAccount != null)
+            {
+                transaction.ToAccount.CurrAmount += transaction.Amount;
             }
 
             _context.Transaction.Add(transaction);
