@@ -18,7 +18,7 @@ namespace FinalProject.Models
 
         [Required]
         [DataType(DataType.Currency)]
-        public int Amount;
+        public int Amount { get; set; }
 
         public string Memo { get; set; }
 

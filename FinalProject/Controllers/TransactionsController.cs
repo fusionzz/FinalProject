@@ -86,28 +86,57 @@ namespace FinalProject.Controllers
         {
             if (transaction.ToAccount != null)
             {
-                var toaccount = await _context.Account.Include(a => a.Customer).FirstAsync(a => a.AccountId == transaction.ToAccount.AccountId);
-
-                if (toaccount == null)
+                if (transaction.ToAccount.AccountId == 0)
                 {
-                    return NotFound();
+                    transaction.ToAccount = null;
                 }
+                else
+                {
 
-                transaction.ToAccount = toaccount;
+                    var toaccount = await _context.Account.Include(a => a.Customer).FirstAsync(a => a.AccountId == transaction.ToAccount.AccountId);
+
+                    if (toaccount == null)
+                    {
+                        return NotFound();
+                    }
+
+                    transaction.ToAccount = toaccount;
+                }
 
             }
 
             if (transaction.FromAccount != null)
             {
-                var fromaccount = await _context.Account.Include(a => a.Customer).FirstAsync(a => a.AccountId == transaction.FromAccount.AccountId);
-
-                if (fromaccount == null)
+                if (transaction.FromAccount.AccountId == 0)
                 {
-                    return NotFound();
+                    transaction.FromAccount = null;
+                }
+                else
+                {
+
+                    var fromaccount = await _context.Account.Include(a => a.Customer).FirstAsync(a => a.AccountId == transaction.FromAccount.AccountId);
+
+                    if (fromaccount == null)
+                    {
+                        return NotFound();
+                    }
+
+                    transaction.FromAccount = fromaccount;
                 }
 
-                transaction.FromAccount = fromaccount;
+            }
 
+            if (transaction.FromAccount != null && (transaction.FromAccount.CurrAmount < transaction.Amount))
+            {
+                return BadRequest();
+            }
+            else
+            {
+                transaction.FromAccount.CurrAmount -= transaction.Amount;
+                if (transaction.ToAccount != null)
+                {
+                    transaction.ToAccount.CurrAmount += transaction.Amount;
+                }
             }
 
             _context.Transaction.Add(transaction);
